@@ -12,6 +12,7 @@ import {
 } from '@nextui-org/react';
 import { ListboxWrapper } from './list-box-wrapper';
 import { useState } from 'react';
+import chatModel from '@/llm_models/chat_openai_api';
 
 interface Message {
     id: number;
@@ -34,7 +35,8 @@ const users = [{ id: 1, content: "查询wsl 安装在哪个盘", role: "user", d
 
 const ChatBox = () => {
 
-    const [message, setMessage] = useState<string>("")
+    const [userMessage, setUserMessage] = useState<string>("")
+    const [aiMessage, setAiMessage] = useState<string>("")
 
 
     const handleKeyDown = (event: { key: string; shiftKey: any; preventDefault: () => void; }) => {
@@ -49,10 +51,13 @@ const ChatBox = () => {
     };
 
 
-    const submit = () => {
-        console.log(message);
+    const submit = async () => {
+        const stream = await chatModel.stream(userMessage);
+        for await (const chunk of stream) {
+            setAiMessage((prevMessage) => prevMessage + chunk.content);
+        }
         // 清空内容
-        setMessage("");
+        setUserMessage("");
     }
 
     return (
@@ -77,7 +82,7 @@ const ChatBox = () => {
                 </ListboxWrapper>
             </CardBody>
             <CardFooter className='w-full flex flex-row'>
-                <Textarea minRows={1} isRequired value={message} onChange={(event) => { setMessage(event.target.value) }} onKeyDown={handleKeyDown} />
+                <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
                 <Spacer x={3} />
                 <Button color='primary' onClick={submit}>Send</Button>
             </CardFooter>
