@@ -13,15 +13,10 @@ import {
     ListboxSection,
 } from '@nextui-org/react';
 import { ListboxWrapper } from './list-box-wrapper';
-import { use, useState } from 'react';
-import chatModel from '@/llm_models/chat_openai_api';
+import { useState } from 'react';
+import { ChatOpenAI } from '@langchain/openai';
+import { setting } from '@/config/settings';
 
-interface Message {
-    id: number;
-    content: string;
-    role: string;
-    datetime: string;
-}
 const users = [{ id: 1, content: "查询wsl 安装在哪个盘", role: "user", datetime: "2023-05-01T12:00:00Z" },
 {
     id: 2, content: `# dsaasdk
@@ -36,10 +31,28 @@ const users = [{ id: 1, content: "查询wsl 安装在哪个盘", role: "user", d
 
 
 
+function getModel(): ChatOpenAI {
+    const initConfig: ModelConfig | "{}" = setting.getItem("modelConfig");
+
+    if (initConfig === "{}") {
+        alert("Please input config")
+        throw new Error("Please input config");
+    } else {
+        return new ChatOpenAI({
+            modelName: initConfig.modelName,
+            openAIApiKey: initConfig.apiKey,
+            configuration: {
+                baseURL: initConfig.apiUrl,
+            },
+        })
+    };
+}
+
 const ChatBox = () => {
 
     const [userMessage, setUserMessage] = useState<string>("")
     const [aiMessage, setAiMessage] = useState<string>("")
+
 
 
     const handleKeyDown = (event: { key: string; shiftKey: any; preventDefault: () => void; }) => {
@@ -55,6 +68,7 @@ const ChatBox = () => {
 
 
     const resp = async () => {
+        const chatModel = getModel();
         const stream = await chatModel.stream(userMessage);
         let chunks = "";
         for await (const chunk of stream) {
