@@ -1,7 +1,6 @@
 import {
 	Navbar as NextUINavbar,
 	NavbarContent,
-	NavbarMenuToggle,
 	NavbarBrand,
 	NavbarItem,
 } from "@nextui-org/navbar";
@@ -14,6 +13,7 @@ import NextLink from "next/link";
 import clsx from "clsx";
 
 import { ThemeSwitch } from "@/components/theme-switch";
+import { Settings } from "@/components/settings"
 import {
 	GithubIcon,
 } from "@/components/icons";
@@ -57,16 +57,9 @@ export const Navbar = () => {
 					<Link isExternal href={siteConfig.links.github} aria-label="Github">
 						<GithubIcon className="text-default-500" />
 					</Link>
+					<Settings />
 					<ThemeSwitch />
 				</NavbarItem>
-			</NavbarContent>
-
-			<NavbarContent className="sm:hidden basis-1 pl-4" justify="end">
-				<Link isExternal href={siteConfig.links.github} aria-label="Github">
-					<GithubIcon className="text-default-500" />
-				</Link>
-				<ThemeSwitch />
-				<NavbarMenuToggle />
 			</NavbarContent>
 		</NextUINavbar>
 	);
