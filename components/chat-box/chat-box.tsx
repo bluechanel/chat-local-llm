@@ -4,18 +4,16 @@ import {
     Button,
     Avatar,
     AvatarIcon,
-    Listbox,
-    ListboxItem,
     Spacer,
     Card,
     CardBody,
     CardFooter,
-    ListboxSection,
+    ScrollShadow,
 } from '@nextui-org/react';
-import { ListboxWrapper } from './list-box-wrapper';
 import { useState } from 'react';
 import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
+import { ChatMessage } from './chat-message';
 
 const users = [{ id: 1, content: "查询wsl 安装在哪个盘", role: "user", datetime: "2023-05-01T12:00:00Z" },
 {
@@ -27,7 +25,14 @@ const users = [{ id: 1, content: "查询wsl 安装在哪个盘", role: "user", d
 希望这个信息对你有所帮助！如果你有其他问题，欢迎随时向我提问。`, role: "ai", datetime: "2023-05-01T12:00:00Z"
 },
 { id: 3, content: "1", role: "user", datetime: "2023-05-01T12:00:00Z" },
-{ id: 4, content: "1", role: "ai", datetime: "2023-05-01T12:00:00Z" }]
+{ id: 4, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 5, content: "1", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 6, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 7, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 9, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 10, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 11, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+{ id: 8, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" }]
 
 
 
@@ -92,39 +97,16 @@ const ChatBox = () => {
     }
 
     return (
-        <Card className='w-full h-full'>
-            <CardBody>
-                <ListboxWrapper>
-                    <Listbox>
-                        <ListboxSection>
-                            {users.map((user) => (
-                                <ListboxItem key={user.id} textValue='string'>
-                                    <div className="flex items-center">
-                                        <Avatar icon={<AvatarIcon />}
-                                            classNames={user.role === "user" ? {
-                                                base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
-                                            } : {
-                                                base: "bg-gradient-to-br from-[#0070F0] to-[#0070F0]",
-                                            }} />
-                                        <Spacer x={3} />
-                                        <div className="flex flex-col w-full">
-                                            <Textarea isReadOnly minRows={1} value={user.content} />
-                                        </div>
-                                    </div>
-                                </ListboxItem>
-                            ))}
-                        </ListboxSection>
-                        {aiMessage === "" ? <ListboxItem key="pass" /> : <ListboxItem key="new" textValue='string'>
-                            <div className="flex items-center">
-                                <Avatar className="flex-shrink-0" showFallback name='AI' />
-                                <Spacer x={3} />
-                                <div className="flex flex-col w-full">
-                                    <Textarea isReadOnly minRows={1} value={aiMessage} />
-                                </div>
-                            </div>
-                        </ListboxItem>}
-                    </Listbox>
-                </ListboxWrapper>
+        <Card className='w-full h-1/4'>
+            <CardBody className='h-1/4'>
+                <div className='flex flex-col gap-y-4'>
+                    {users.map((message, index) => (
+                        <div key={index}>
+                            <ChatMessage
+                                message={message} />
+                        </div>
+                    ))}
+                </div>
             </CardBody>
             <CardFooter className='w-full flex flex-row'>
                 <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
