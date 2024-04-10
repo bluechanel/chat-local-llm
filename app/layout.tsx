@@ -5,6 +5,8 @@ import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
 import { Navbar } from "@/components/navbar";
 import clsx from "clsx";
+import { SideBar } from "@/components/side-bar";
+import { Divider } from "@nextui-org/react";
 
 export const metadata: Metadata = {
 	title: {
@@ -38,9 +40,11 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-					<div className="relative flex flex-col h-screen">
-						<Navbar />
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow h-5/6">
+					<div className="relative flex flex-row h-screen">
+						<SideBar />
+						<Divider className="h-full" orientation="vertical" />
+						<main className="h-5/6 w-full">
+							<Navbar />
 							{children}
 						</main>
 					</div>

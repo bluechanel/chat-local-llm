@@ -19,7 +19,7 @@ export const ChatMessage: FC<Props> = ({ message }) => {
                 }} />
             <Spacer x={3} />
             <div className="flex flex-col w-full">
-                <Textarea isReadOnly minRows={1} value={message.content} />
+                <Textarea isReadOnly minRows={1} maxRows={1000} value={message.content} />
             </div>
         </div>
     );
