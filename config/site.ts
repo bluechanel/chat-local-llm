@@ -4,14 +4,6 @@ export const siteConfig = {
 	name: "Chat Local LLM",
 	description: "Chat with local LLM via configuration",
 	navItems: [
-		{
-			label: "Home",
-			href: "/",
-		},
-		{
-			label: "About",
-			href: "/about",
-		}
 	],
 	navMenuItems: [],
 	links: {

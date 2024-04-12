@@ -96,8 +96,8 @@ const ChatBox = () => {
     }
 
     return (
-        <Card className='w-full h-full'>
-            <CardBody className='h-full'>
+        <>
+            <div className='w-full h-full flex flex-col'>
                 <div className='flex flex-col flex-col-reverse gap-y-4 w-full h-full overflow-auto'>
                     {aiMessage === "" ? <div /> : <ChatMessage
                         message={{ role: "ai", content: aiMessage, datetime: "" }} />}
@@ -109,14 +109,13 @@ const ChatBox = () => {
                         </div>
                     ))}
                 </div>
-
-            </CardBody>
-            <CardFooter className='w-full flex flex-row'>
-                <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
-                <Spacer x={3} />
-                <Button color='primary' onClick={submit}>Send</Button>
-            </CardFooter>
-        </Card>
+                <div className='w-full flex flex-row'>
+                    <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
+                    <Spacer x={3} />
+                    <Button color='primary' onClick={submit}>Send</Button>
+                </div>
+            </div>
+        </>
     );
 };
 
