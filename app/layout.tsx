@@ -43,7 +43,7 @@ export default function RootLayout({
 					<div className="relative flex flex-row h-screen">
 						<SideBar />
 						<Divider className="h-full" orientation="vertical" />
-						<main className="h-5/6 w-full">
+						<main className="flex flex-col w-full h-full">
 							<Navbar />
 							{children}
 						</main>

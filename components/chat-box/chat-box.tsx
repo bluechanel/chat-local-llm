@@ -1,5 +1,6 @@
 "use client"
 import {
+    ScrollShadow,
     Textarea
 } from '@nextui-org/react';
 import { useEffect, useRef, useState } from 'react';
@@ -107,15 +108,15 @@ const ChatBox = () => {
 
     return (
         <>
-            <div className='w-full h-full flex flex-col'>
-                <div ref={overflowRef} className='flex flex-col w-full h-full overflow-auto gap-y-4 sticky'>
+            <div className='w-full h-full flex flex-col gap-y-5'>
+                <ScrollShadow hideScrollBar ref={overflowRef} className='flex flex-col w-full h-full overflow-auto gap-y-4 sticky'>
                     {users.map((message, index) => (
                         <div key={index}>
                             <ChatMessage
                                 message={message} />
                         </div>
                     ))}
-                </div>
+                </ScrollShadow>
                 <footer className='w-full flex flex-row'>
                     <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
                 </footer>
