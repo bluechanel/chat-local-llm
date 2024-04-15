@@ -1,13 +1,8 @@
 "use client"
 import {
-    Textarea,
-    Button,
-    Spacer,
-    Card,
-    CardBody,
-    CardFooter,
+    Textarea
 } from '@nextui-org/react';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
 import { ChatMessage } from './chat-message';
@@ -57,6 +52,8 @@ const ChatBox = () => {
     const [userMessage, setUserMessage] = useState<string>("")
     const [aiMessage, setAiMessage] = useState<string>("")
 
+    const overflowRef = useRef<HTMLDivElement>(null);
+
 
 
     const handleKeyDown = (event: { key: string; shiftKey: any; preventDefault: () => void; }) => {
@@ -87,21 +84,31 @@ const ChatBox = () => {
         // 清空用户输入内容
         setUserMessage("");
         // 用户消息加入消息列表
-        users.unshift({ id: users.length + 1, content: userMessage, role: "user", datetime: new Date().toISOString() })
-        const ai_mesaage = await resp();
-        // ai消息加入消息列表
-        users.unshift({ id: users.length + 1, content: ai_mesaage, role: "assistant", datetime: new Date().toISOString() })
+        users.push({ id: users.length + 1, content: userMessage, role: "user", datetime: new Date().toISOString() })
+
+        const chatModel = getModel();
+        const stream = await chatModel.stream(userMessage);
+        let chunks = "";
+        const useLength = users.length;
+        for await (const chunk of stream) {
+            setAiMessage((prevMessage) => prevMessage + chunk.content);
+            chunks += chunk.content;
+            users[useLength] = { id: users.length + 1, content: chunks, role: "assistant", datetime: new Date().toISOString() }
+        }
         // 加入列表后清空ai消息
         setAiMessage("");
     }
 
+    useEffect(() => {
+        if (overflowRef.current) {
+            overflowRef.current.scrollTop = overflowRef.current.scrollHeight;
+        };
+    }, [userMessage, aiMessage])
+
     return (
         <>
             <div className='w-full h-full flex flex-col'>
-                <div className='flex flex-col flex-col-reverse gap-y-4 w-full h-full overflow-auto'>
-                    {aiMessage === "" ? <div /> : <ChatMessage
-                        message={{ role: "ai", content: aiMessage, datetime: "" }} />}
-
+                <div ref={overflowRef} className='flex flex-col w-full h-full overflow-auto gap-y-4 sticky'>
                     {users.map((message, index) => (
                         <div key={index}>
                             <ChatMessage
@@ -109,11 +116,9 @@ const ChatBox = () => {
                         </div>
                     ))}
                 </div>
-                <div className='w-full flex flex-row'>
+                <footer className='w-full flex flex-row'>
                     <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
-                    <Spacer x={3} />
-                    <Button color='primary' onClick={submit}>Send</Button>
-                </div>
+                </footer>
             </div>
         </>
     );
