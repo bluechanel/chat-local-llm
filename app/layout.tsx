@@ -40,14 +40,13 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-					<div className="relative flex flex-row h-screen">
+					<main className="flex h-screen items-center">
 						<SideBar />
 						<Divider className="h-full" orientation="vertical" />
-						<main className="flex flex-col w-full h-full">
-							<Navbar />
+						<div className="flex flex-col w-full h-screen overflow-hidden">
 							{children}
-						</main>
-					</div>
+						</div>
+					</main>
 				</Providers>
 			</body>
 		</html>

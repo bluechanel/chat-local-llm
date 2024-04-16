@@ -27,6 +27,9 @@ const users = [
     { id: 10, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
     { id: 11, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
     { id: 8, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+    { id: 12, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+    { id: 13, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
+    { id: 14, content: "如果你需要在Windows环境中访问WSL的文件，你可以在WSL环境中运行 explorer.exe . 命令，这将启动文件资源管理器并打开当前的Linux目录，你可以从那里浏览Linux环境的文件系", role: "ai", datetime: "2023-05-01T12:00:00Z" },
 ]
 
 
@@ -117,9 +120,9 @@ const ChatBox = () => {
                         </div>
                     ))}
                 </ScrollShadow>
-                <footer className='w-full flex flex-row'>
+                {/* <footer className='w-full flex flex-row'>
                     <Textarea minRows={1} isRequired value={userMessage} onChange={(event) => { setUserMessage(event.target.value) }} onKeyDown={handleKeyDown} />
-                </footer>
+                </footer> */}
             </div>
         </>
     );

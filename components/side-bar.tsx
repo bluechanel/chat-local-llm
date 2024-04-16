@@ -4,7 +4,7 @@ import { EditIcon } from "./icons";
 export const SideBar = () => {
 
     return (
-        <div className="h-full w-[260px] flex flex-col">
+        <div className="h-full w-2/12 flex flex-col overflow-hidden">
             <div>
                 <Button className="justify-between" fullWidth color="default" variant="light" endContent={<EditIcon size={18} />}>New Chat</Button>
             </div>

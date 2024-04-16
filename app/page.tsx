@@ -1,12 +1,22 @@
 import ChatBox from "@/components/chat-box/chat-box";
+import { Navbar } from "@/components/navbar";
+import { Textarea } from "@nextui-org/react";
+
 
 
 export default function Home() {
 	return (
-		<section className="flex flex-col items-center justify-center gap-4 py-8 md:py-10 h-5/6">
-			<div className="w-4/5 h-full">
-				<ChatBox />
+		<div className="flex flex-col justify-between w-full h-full">
+			<Navbar />
+			<div className="flex justify-center w-full overflow-x-hidden overflow-y-hidden h-full">
+				<div className="flex w-4/5 h-full">
+					<ChatBox />
+				</div>
 			</div>
-		</section>
+			<div className="p-4 flex justify-between w-full items-center gap-2">
+				<Textarea minRows={1} isRequired />
+			</div>
+
+		</div>
 	);
 }
