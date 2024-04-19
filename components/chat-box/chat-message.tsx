@@ -3,12 +3,12 @@ import { Avatar, AvatarIcon, Spacer, Textarea } from "@nextui-org/react"
 import { FC } from "react";
 
 
-interface Props {
+export interface MessageProps {
     message: Message;
 }
 
 
-export const ChatMessage: FC<Props> = ({ message }) => {
+export const ChatMessage: FC<MessageProps> = ({ message }) => {
     return (
         <div className="flex flex-row">
             <div className="flex items-center">
