@@ -4,6 +4,8 @@ import { Navbar } from "@/components/navbar";
 import { useState } from "react";
 import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
+import { SideBar } from "@/components/side-bar";
+import { Divider } from "@nextui-org/react";
 
 const initMessage = [
 	{ id: 1, content: "你好！有什么可以帮助你的？", role: "assistant", datetime: "2024-05-01T12:00:00Z" }]
@@ -50,9 +52,13 @@ export default function Home() {
 	}
 
 	return (
-		<div className="flex flex-col justify-between w-full h-full">
-			<Navbar />
-			<ChatBox messages={messages} handleSubmit={submit} value={userMessage} onValueChange={(newValue) => setUserMessage(newValue)} />
+		<div className="flex h-full w-full">
+			<SideBar />
+			<Divider className="h-full" orientation="vertical" />
+			<div className="flex flex-col justify-between w-full h-full">
+				<Navbar />
+				<ChatBox messages={messages} handleSubmit={submit} value={userMessage} onValueChange={(newValue) => setUserMessage(newValue)} />
+			</div>
 		</div>
 	);
 }

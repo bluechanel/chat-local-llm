@@ -3,10 +3,8 @@ import { Metadata } from "next";
 import { siteConfig } from "@/config/site";
 import { fontSans } from "@/config/fonts";
 import { Providers } from "./providers";
-import { Navbar } from "@/components/navbar";
 import clsx from "clsx";
-import { SideBar } from "@/components/side-bar";
-import { Divider } from "@nextui-org/react";
+
 
 export const metadata: Metadata = {
 	title: {
@@ -40,9 +38,7 @@ export default function RootLayout({
 				)}
 			>
 				<Providers themeProps={{ attribute: "class", defaultTheme: "light" }}>
-					<main className="flex h-screen items-center">
-						<SideBar />
-						<Divider className="h-full" orientation="vertical" />
+					<main className="h-screen items-center">
 						<div className="flex flex-col w-full h-screen overflow-hidden">
 							{children}
 						</div>
