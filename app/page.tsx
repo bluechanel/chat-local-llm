@@ -1,7 +1,7 @@
 "use client"
 import ChatBox from "@/components/chat-box/chat-box";
 import { Navbar } from "@/components/navbar";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
 
@@ -49,32 +49,31 @@ function getModel(): ChatOpenAI {
 
 export default function Home() {
 
+	const [messages, setMessages] = useState<Message[]>(users);
 	const [userMessage, setUserMessage] = useState<string>("");
-	const [aiMessage, setAiMessage] = useState<string>("")
+
 
 	const submit = async () => {
 		// 清空用户输入内容
 		setUserMessage("");
 		// 用户消息加入消息列表
-		users.push({ id: users.length + 1, content: userMessage, role: "user", datetime: new Date().toISOString() })
+		setMessages((prevItems) => [...prevItems, { content: userMessage, role: "user", datetime: new Date().toISOString() }]);
+		setMessages((prevItems) => [...prevItems, { content: "", role: "assistant", datetime: new Date().toISOString() }]);
 
 		const chatModel = getModel();
 		const stream = await chatModel.stream(userMessage);
 		let chunks = "";
-		const useLength = users.length;
 		for await (const chunk of stream) {
-			setAiMessage((prevMessage) => prevMessage + chunk.content);
 			chunks += chunk.content;
-			users[useLength] = { id: users.length + 1, content: chunks, role: "assistant", datetime: new Date().toISOString() }
+			setMessages((prevItems) => [...prevItems.slice(0, -1), { content: chunks, role: "assistant", datetime: new Date().toISOString() }])
 		}
-		// 加入列表后清空ai消息
-		setAiMessage("");
+
 	}
 
 	return (
 		<div className="flex flex-col justify-between w-full h-full">
 			<Navbar />
-			<ChatBox messages={users} handleSubmit={submit} value={userMessage} onValueChange={(newValue) => setUserMessage(newValue)} />
+			<ChatBox messages={messages} handleSubmit={submit} value={userMessage} onValueChange={(newValue) => setUserMessage(newValue)} />
 		</div>
 	);
 }
