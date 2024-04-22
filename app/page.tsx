@@ -2,10 +2,12 @@
 import ChatBox from "@/components/chat-box/chat-box";
 import { Navbar } from "@/components/navbar";
 import { useState } from "react";
+import { v4 as uuidv4 } from 'uuid';
 import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
 import { SideBar } from "@/components/side-bar";
 import { Divider } from "@nextui-org/react";
+
 
 const initMessage = [
 	{ id: 1, content: "你好！有什么可以帮助你的？", role: "assistant", datetime: "2024-05-01T12:00:00Z" }]
@@ -32,6 +34,7 @@ export default function Home() {
 
 	const [messages, setMessages] = useState<Message[]>(initMessage);
 	const [userMessage, setUserMessage] = useState<string>("");
+	const [chatId, setChatId] = useState<string>("");
 
 
 	const submit = async () => {
@@ -51,9 +54,17 @@ export default function Home() {
 
 	}
 
+	const create = () => {
+		// create uuid
+		const id = uuidv4();
+		setChatId(id);
+	}
+
+	const ccc: Chat[] = [{ uuid: "121212", name: "New chat" }];
+
 	return (
 		<div className="flex h-full w-full">
-			<SideBar />
+			<SideBar createChat={create} chatList={ccc} />
 			<Divider className="h-full" orientation="vertical" />
 			<div className="flex flex-col justify-between w-full h-full">
 				<Navbar />
