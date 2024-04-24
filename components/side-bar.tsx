@@ -7,9 +7,10 @@ export interface SideBarProps {
     createChat: () => void;
     // chat list
     chatList: Chat[];
+    selectChat: (chatId: string) => void;
 }
 
-export const SideBar = ({ createChat, chatList }: SideBarProps) => {
+export const SideBar = ({ createChat, chatList, selectChat }: SideBarProps) => {
 
     return (
         <div className="h-full w-2/12 flex flex-col overflow-hidden">
@@ -18,7 +19,7 @@ export const SideBar = ({ createChat, chatList }: SideBarProps) => {
             </div>
             <div>
                 {chatList.map((chat, index) => (
-                    <Button key={index} className="justify-between" fullWidth color="default" variant="light">{chat.name}</Button>
+                    <Button key={index} className="justify-between" fullWidth color="default" variant="light" onClick={() => selectChat(chat.uuid)}>{chat.name}</Button>
                 ))}
             </div>
         </div>

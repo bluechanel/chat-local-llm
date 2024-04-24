@@ -13,6 +13,10 @@ const initMessage = [
 	{ id: 1, content: "你好！有什么可以帮助你的？", role: "assistant", datetime: "2024-05-01T12:00:00Z" }]
 
 
+const ccc: Chat[] = [{ uuid: "121212", name: "New chat" }];
+
+
+
 function getModel(): ChatOpenAI {
 	const initConfig: ModelConfig | "{}" = setting.getItem("modelConfig");
 
@@ -55,16 +59,19 @@ export default function Home() {
 	}
 
 	const create = () => {
-		// create uuid
+		// create chat uuid
 		const id = uuidv4();
 		setChatId(id);
+		setMessages(initMessage);
+	}
+	const selected = (chatId: string) => {
+		console.log(chatId);
 	}
 
-	const ccc: Chat[] = [{ uuid: "121212", name: "New chat" }];
 
 	return (
 		<div className="flex h-full w-full">
-			<SideBar createChat={create} chatList={ccc} />
+			<SideBar createChat={create} chatList={ccc} selectChat={selected} />
 			<Divider className="h-full" orientation="vertical" />
 			<div className="flex flex-col justify-between w-full h-full">
 				<Navbar />
