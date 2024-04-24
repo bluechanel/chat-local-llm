@@ -13,7 +13,7 @@ const initMessage = [
 	{ id: 1, content: "你好！有什么可以帮助你的？", role: "assistant", datetime: "2024-05-01T12:00:00Z" }]
 
 
-const ccc: Chat[] = [{ uuid: "121212", name: "New chat" }];
+const ccc: Chat[] = [{ uuid: "111111", name: "New chat" }, { uuid: "222222", name: "New chat" }];
 
 
 
@@ -37,6 +37,7 @@ function getModel(): ChatOpenAI {
 export default function Home() {
 
 	const [messages, setMessages] = useState<Message[]>(initMessage);
+	const [chatList, setChatList] = useState<Chat[]>(ccc);
 	const [userMessage, setUserMessage] = useState<string>("");
 	const [chatId, setChatId] = useState<string>("");
 
@@ -62,16 +63,17 @@ export default function Home() {
 		// create chat uuid
 		const id = uuidv4();
 		setChatId(id);
+		setChatList((prevItems) => [{ uuid: id, name: "New Chat" }, ...prevItems]);
 		setMessages(initMessage);
 	}
-	const selected = (chatId: string) => {
-		console.log(chatId);
+	const selected = (selectedChatId: string) => {
+		setChatId(selectedChatId);
 	}
 
 
 	return (
 		<div className="flex h-full w-full">
-			<SideBar createChat={create} chatList={ccc} selectChat={selected} />
+			<SideBar createChat={create} chatList={chatList} selectChat={selected} currentChatId={chatId} />
 			<Divider className="h-full" orientation="vertical" />
 			<div className="flex flex-col justify-between w-full h-full">
 				<Navbar />
