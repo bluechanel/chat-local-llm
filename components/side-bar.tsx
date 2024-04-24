@@ -22,7 +22,7 @@ export const SideBar = ({ createChat, chatList, currentChatId, selectChat }: Sid
             <div>
                 {chatList.map((chat, index) => (
                     chat.uuid == currentChatId ?
-                        <Button key={index} className="justify-between" fullWidth color="default" disabled variant="light" >{chat.name}</Button>
+                        <Button key={index} className="justify-between" fullWidth color="default" variant="flat" >{chat.name}</Button>
                         :
                         <Button key={index} className="justify-between" fullWidth color="default" variant="light" onClick={() => selectChat(chat.uuid)}>{chat.name}</Button>
                 ))}
