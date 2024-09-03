@@ -1,10 +1,11 @@
 "use client"
 import { Avatar, AvatarIcon, Spacer, Textarea } from "@nextui-org/react"
 import { FC } from "react";
+import { BaseMessage, HumanMessage } from "@langchain/core/messages";
 
 
 export interface MessageProps {
-    message: Message;
+    message: BaseMessage;
 }
 
 
@@ -13,7 +14,7 @@ export const ChatMessage: FC<MessageProps> = ({ message }) => {
         <div className="flex flex-row">
             <div className="flex items-center">
                 <Avatar icon={<AvatarIcon />}
-                    classNames={message.role === "user" ? {
+                    classNames={message instanceof HumanMessage ? {
                         base: "bg-gradient-to-br from-[#FFB457] to-[#FF705B]",
                     } : {
                         base: "bg-gradient-to-br from-[#0070F0] to-[#0070F0]",

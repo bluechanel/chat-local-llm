@@ -5,10 +5,11 @@ import {
 import React, { useEffect, useRef } from 'react';
 import { ChatMessage } from './chat-message';
 import { ChatInput, InputProps } from './chat-input';
+import { BaseMessage } from "@langchain/core/messages";
 
 
 interface ChatProps {
-    messages: Message[];
+    messages: BaseMessage[];
 }
 
 
@@ -23,7 +24,6 @@ const ChatBox = ({ messages, handleSubmit, value, onValueChange }: MergedProps) 
 
 
     useEffect(() => {
-        console.log("Messages updated");
         if (overflowRef.current) {
             overflowRef.current.scrollTop = overflowRef.current.scrollHeight;
         };

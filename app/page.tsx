@@ -7,10 +7,15 @@ import { ChatOpenAI } from '@langchain/openai';
 import { setting } from '@/config/settings';
 import { SideBar } from "@/components/side-bar";
 import { Divider } from "@nextui-org/react";
+import { HumanMessage, AIMessage, BaseMessage } from "@langchain/core/messages";
+import {
+	ChatPromptTemplate,
+	MessagesPlaceholder,
+} from "@langchain/core/prompts";
+import { StringOutputParser } from "@langchain/core/output_parsers";
 
 
-const initMessage = [
-	{ id: 1, content: "你好！有什么可以帮助你的？", role: "assistant", datetime: "2024-05-01T12:00:00Z" }]
+const initMessage: BaseMessage[] = []
 
 
 const ccc: Chat[] = [{ uuid: "111111", name: "New chat" }, { uuid: "222222", name: "New chat" }];
@@ -36,25 +41,42 @@ function getModel(): ChatOpenAI {
 
 export default function Home() {
 
-	const [messages, setMessages] = useState<Message[]>(initMessage);
+	const [messages, setMessages] = useState<BaseMessage[]>(initMessage);
 	const [chatList, setChatList] = useState<Chat[]>(ccc);
 	const [userMessage, setUserMessage] = useState<string>("");
 	const [chatId, setChatId] = useState<string>("");
 
 
+
 	const submit = async () => {
 		// 清空用户输入内容
 		setUserMessage("");
-		// 用户消息加入消息列表
-		setMessages((prevItems) => [...prevItems, { content: userMessage, role: "user", datetime: new Date().toISOString() }]);
-		setMessages((prevItems) => [...prevItems, { content: "", role: "assistant", datetime: new Date().toISOString() }]);
 
 		const chatModel = getModel();
-		const stream = await chatModel.stream(userMessage);
+		const contextualizeQSystemPrompt = `你是一个AI助手。`;
+
+		const contextualizeQPrompt = ChatPromptTemplate.fromMessages([
+			["system", contextualizeQSystemPrompt],
+			new MessagesPlaceholder("chat_history"),
+			["human", "{question}"],
+		]);
+
+		const contextualizeQChain = contextualizeQPrompt
+			.pipe(chatModel)
+			.pipe(new StringOutputParser());
+
+
+		const stream = await contextualizeQChain.stream({
+			chat_history: messages,
+			question: userMessage,
+		});
+		// 用户消息加入消息列表
+		setMessages((prevItems) => [...prevItems, new HumanMessage(userMessage)]);
+		setMessages((prevItems) => [...prevItems, new AIMessage("")]);
 		let chunks = "";
 		for await (const chunk of stream) {
-			chunks += chunk.content;
-			setMessages((prevItems) => [...prevItems.slice(0, -1), { content: chunks, role: "assistant", datetime: new Date().toISOString() }])
+			chunks += chunk;
+			setMessages((prevItems) => [...prevItems.slice(0, -1), new AIMessage(chunks)])
 		}
 
 	}
