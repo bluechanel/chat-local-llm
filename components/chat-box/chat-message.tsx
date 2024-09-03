@@ -22,7 +22,7 @@ export const ChatMessage: FC<MessageProps> = ({ message }) => {
             </div>
             <Spacer x={3} />
             <div className="flex flex-col w-full">
-                <Textarea isReadOnly minRows={1} maxRows={1000} value={message.content} />
+                <Textarea isReadOnly minRows={1} maxRows={1000} value={message.content as string} />
             </div>
         </div>
 

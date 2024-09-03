@@ -62,7 +62,7 @@ export default function Home() {
 		]);
 
 		const contextualizeQChain = contextualizeQPrompt
-			.pipe(chatModel)
+			.pipe(chatModel as any)
 			.pipe(new StringOutputParser());
 
 
